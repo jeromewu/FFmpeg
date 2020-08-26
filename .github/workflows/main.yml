@@ -1,0 +1,20 @@
+name: Pt.1 Build with GCC
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ n4.3.1-p1-ci ]
+  pull_request:
+    branches: [ n4.3.1-p1-ci ]
+
+jobs:
+  build_with_docker:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Build FFMpeg
+        shell: bash
+        run: |
+          bash build-with-docker.sh
