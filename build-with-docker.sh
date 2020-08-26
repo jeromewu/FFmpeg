@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 FLAGS=""
 # Attach TTY only when available, this is for running in Gihub Actions
