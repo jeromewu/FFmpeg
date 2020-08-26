@@ -8,14 +8,19 @@ on:
     branches: [ n4.3.1-p1-ci ]
 
 jobs:
-  build_with_docker:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+  linux-build_with_docker:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build FFMpeg
         shell: bash
         run: |
           bash build-with-docker.sh
+  windows-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build FFMpeg
+        shell: bash
+        run: |
+          bash build.sh
