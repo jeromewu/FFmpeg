@@ -16,11 +16,27 @@ jobs:
         shell: bash
         run: |
           bash build-with-docker.sh
-  windows-build:
-    runs-on: windows-latest
+      - uses: actions/upload-artifact@master
+        with:
+          name: ffmpeg
+          path: ffmpeg
+  macos-build:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build FFMpeg
         shell: bash
         run: |
+          shopt -s expand_aliases
+          alias gcc='gcc-8'
           bash build.sh
+  # Not working with error messsage:
+  #   C:\ProgramData\Chocolatey\lib\mingw\tools\install\mingw64\x86_64-w64-mingw32\bin\ar.exe: libavfilter/vsink_null: No such file or directory
+  # windows-build:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Build FFMpeg
+  #       shell: bash
+  #       run: |
+  #         bash build.sh
