@@ -23,4 +23,4 @@ FLAGS=(
   # --enable-libaom         # enable libaom
 )
 echo "FFMPEG_CONFIG_FLAGS=${FLAGS[@]}"
-EM_PKG_CONFIG_PATH=$(FFMPEG_WEBM_PC_PATH) emconfigure ./configure "${FLAGS[@]}"
+EM_PKG_CONFIG_PATH=${FFMPEG_WEBM_PC_PATH} emconfigure ./configure "${FLAGS[@]}"
