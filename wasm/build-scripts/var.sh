@@ -58,6 +58,8 @@ FFMPEG_CONFIG_FLAGS_BASE=(
   --cxx=em++
   --objcc=emcc
   --dep-cc=emcc
+  --enable-libass
+  --enable-filter=subtitles,overlay
 )
 
 echo "EMSDK=$EMSDK"

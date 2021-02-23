@@ -43,3 +43,12 @@
 [submodule "third_party/libwebp"]
 	path = third_party/libwebp
 	url = https://github.com/ffmpegwasm/libwebp
+[submodule "third_party/fribidi"]
+	path = third_party/fribidi
+	url = https://github.com/fribidi/fribidi.git
+[submodule "third_party/harfbuzz"]
+	path = third_party/harfbuzz
+	url = https://github.com/harfbuzz/harfbuzz.git
+[submodule "third_party/libass"]
+	path = third_party/libass
+	url = https://github.com/libass/libass.git

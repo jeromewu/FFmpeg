@@ -34,6 +34,12 @@ $SCRIPT_ROOT/build-opus.sh
 $SCRIPT_ROOT/build-freetype2.sh
 # build libwebp
 $SCRIPT_ROOT/build-libwebp.sh
+# build fribidi
+$SCRIPT_ROOT/build-fribidi.sh
+# build harfbuzz
+$SCRIPT_ROOT/build-harfbuzz.sh
+# build libass
+$SCRIPT_ROOT/build-libass.sh
 # build aom (disabled as it is extremely slow)
 # $SCRIPT_ROOT/build-aom.sh
 # configure FFmpeg with Emscripten
