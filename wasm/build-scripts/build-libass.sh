@@ -8,7 +8,8 @@ LIBASS_PC_PATH="$BUILD_DIR/lib/pkgconfig"
 CONF_FLAGS=(
   --prefix=$BUILD_DIR                                 # install library in a build directory for FFmpeg to include
   --host=i686-gnu                                     # use i686 linux
-  --disable-static
+  --disable-shared
+  --enable-static
   --disable-asm                                       # disable asm optimization
   --disable-fontconfig
   --disable-require-system-font-provider
