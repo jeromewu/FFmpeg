@@ -73,6 +73,7 @@ FFMPEG_CONFIG_FLAGS_BASE=(
   --cxx=em++
   --objcc=emcc
   --dep-cc=emcc
+  --enable-small
   ${EXTRA_FFMPEG_CONF_FLAGS-}
 )
 
