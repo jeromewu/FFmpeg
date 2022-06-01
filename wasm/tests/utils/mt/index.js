@@ -3,7 +3,7 @@ let resolve = null;
 
 const ffmpeg = ({ core, args }) => new Promise((_resolve) => {
   core.ccall(
-    'emscripten_proxy_main',  // use emscripten_proxy_main if emscripten upgraded
+    'proxy_main',  // use emscripten_proxy_main if emscripten upgraded
     'number',
     ['number', 'number'],
     parseArgs(core, ['ffmpeg', '-hide_banner', '-nostdin', ...args]),
