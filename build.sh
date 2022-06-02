@@ -33,6 +33,8 @@ run-all() {
     #build-aom # disabled as it is extremely slow
     configure-ffmpeg
     build-ffmpeg
+    configure-ffmpeg.mp4-scale
+    build-ffmpeg.mp4-scale
   )
   run ${SCRIPTS[@]}
 }
