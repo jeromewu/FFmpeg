@@ -35,6 +35,8 @@ run-all() {
     build-ffmpeg
     configure-ffmpeg.mp4-scale
     build-ffmpeg.mp4-scale
+    configure-ffmpeg.png-to-mp4
+    build-ffmpeg.png-to-mp4
   )
   run ${SCRIPTS[@]}
 }
