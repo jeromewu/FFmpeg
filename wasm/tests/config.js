@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const base = path.join(__dirname, 'data');
+const base2 = path.join(__dirname, 'data2');
 const avi = Uint8Array.from(fs.readFileSync(path.join(base, 'video-1s.avi')));
+const mp4 = Uint8Array.from(fs.readFileSync(path.join(base2, 'video-1s.mp4')));
 const wav = Uint8Array.from(fs.readFileSync(path.join(base, 'audio-1s.wav')));
 const arial = Uint8Array.from(fs.readFileSync(path.join(base, 'arial.ttf')));
 const png = Uint8Array.from(fs.readFileSync(path.join(base, 'image.png')));
@@ -228,6 +230,26 @@ const CASES = [
       { name: 'video.mp4', type: 'video/mp4' },
     ],
     st: false,
+  },
+  {
+    name: 'mp4 scale',
+    args: ['-i', 'video.mp4', '-vf', 'scale=128:-1', 'video-scaled.mp4'],
+    input: [
+      { name: 'video.mp4', data: mp4 },
+    ],
+    output: [
+      { name: 'video-scaled.mp4', type: 'video/mp4' },
+    ]
+  },
+  {
+    name: 'png to mp4',
+    args: ['-i', 'image.png', 'video.mp4'],
+    input: [
+      { name: 'image.png', data: png },
+    ],
+    output: [
+      { name: 'video.mp4', type: 'video/mp4' },
+    ]
   },
 ];
 

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "serve .",
-    "test": "node --experimental-wasm-threads --experimental-wasm-bulk-memory ./node_modules/.bin/jest"
+    "test": "node --experimental-wasm-threads --experimental-wasm-bulk-memory ./node_modules/.bin/jest --verbose"
   },
   "author": "jeromewus@gmail.com",
   "license": "MIT",

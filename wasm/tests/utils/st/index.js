@@ -1,7 +1,7 @@
 const { Worker } = require('worker_threads');
 const path = require('path');
 
-const getCore = async () => {
+const getCore = async (corename) => {
   const resolves = {};
   let resolveExit = null;
   let _id = 0;
@@ -21,6 +21,7 @@ const getCore = async () => {
     resolveExit();
   });
 
+  await getHandler({ type: 'LOAD', corename });
   await getHandler({ type: 'INIT' });
 
   return {

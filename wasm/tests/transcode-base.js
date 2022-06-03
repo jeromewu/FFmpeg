@@ -3,7 +3,7 @@ const { CASES, TIMEOUT } = require('./config');
 
 require('events').EventEmitter.defaultMaxListeners = 64;
 
-module.exports = (mode) => {
+module.exports = (mode, corename, caseFilter = (name) => true) => {
   const { getCore, ffmpeg } = require('./utils')(mode);
   CASES.forEach(({
     name,
@@ -14,8 +14,9 @@ module.exports = (mode) => {
     st,
   }) => {
     if (mode === 'st' && st === false) { return; }
-    test(`[${mode}] ${name}`, async () => {
-      const core = await getCore();
+    if (!caseFilter(name)){ return; }
+    test(`[${mode}][${corename}] ${name}`, async () => {
+      const core = await getCore(corename);
       for (let i = 0; i < dirs.length; i++) {
         await core.FS.mkdir(dirs[i]);
       }

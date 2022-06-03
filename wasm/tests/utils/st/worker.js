@@ -1,10 +1,13 @@
 const { parentPort } = require('worker_threads');
-const createFFmpegCore = require('../../../packages/core-st/dist/ffmpeg-core');
+let createFFmpegCore = null;
 const parseArgs = require('../parseArgs');
 let core = null;
-
-parentPort.on('message', async ({ id, type, cmd, args }) => {
+parentPort.on('message', async ({ id, type, cmd, args, corename }) => {
   switch(type) {
+    case 'LOAD':
+      createFFmpegCore = require(`../../../packages/${corename}/dist/ffmpeg-core`);
+      parentPort.postMessage({ id, type: 'LOAD' });
+      break;
     case 'INIT':
       core = await createFFmpegCore({
         printErr: () => {},
