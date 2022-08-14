@@ -4,7 +4,6 @@ set -euo pipefail
 source $(dirname $0)/var.sh
 
 LIB_PATH=third_party/x265/source
-CXXFLAGS="-s USE_PTHREADS=1 $OPTIM_FLAGS"
 BASE_FLAGS=(
   -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_FILE
   -DENABLE_LIBNUMA=OFF
@@ -42,18 +41,20 @@ mkdir -p main 10bit 12bit
 
 cd 12bit
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_12BIT[@]}
+emmake make clean
 emmake make -j
 
 cd ../10bit 
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_10BIT[@]}
+emmake make clean
 emmake make -j
 
 cd ../main
 ln -sf ../10bit/libx265.a libx265_main10.a
 ln -sf ../12bit/libx265.a libx265_main12.a
 emmake cmake ../.. -DCMAKE_CXX_FLAGS="$CXXFLAGS" ${FLAGS_MAIN[@]}
-emmake make install -j
-
+emmake make clean
+emmake make -j
 mv libx265.a libx265_main.a
 
 # Merge static libraries
@@ -65,11 +66,12 @@ ADDLIB libx265_main12.a
 SAVE
 END
 EOF
+emmake make install -j
 
-cp libx265.a $BUILD_DIR/lib
-
-emmake make -C . clean
-emmake make -C ../10bit clean
-emmake make -C ../12bit clean
+# BUG: In Github Actions, x265.pc is not generated,
+# so we need to copy one manually
+cp $ROOT_DIR/wasm/patches/x265.pc $BUILD_DIR/lib/pkgconfig
+cp x265.pc $BUILD_DIR/lib/pkgconfig || true
+cp x265.pc $ROOT_DIR/wasm/patches || true
 
 cd $ROOT_DIR

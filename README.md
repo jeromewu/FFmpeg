@@ -37,7 +37,7 @@ Setup the emsdk from [HERE](https://emscripten.org/docs/getting_started/download
 $ bash build.sh
 ```
 
-If nothing goes wrong, you can find JavaScript files in `wasm/dist`.
+If nothing goes wrong, you can find JavaScript files in `wasm/packages/core/dist`.
 
 ## Test
 

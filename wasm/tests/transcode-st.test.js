@@ -1,0 +1,1 @@
+require('./transcode-base')('st');

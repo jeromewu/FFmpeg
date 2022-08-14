@@ -4,8 +4,6 @@ set -euo pipefail
 source $(dirname $0)/var.sh
 
 LIB_PATH=third_party/vorbis
-CFLAGS="-s USE_PTHREADS=1 $OPTIM_FLAGS -I$BUILD_DIR/include"
-LDFLAGS="-L$BUILD_DIR/lib"
 CONF_FLAGS=(
   --prefix=$BUILD_DIR                                 # install library in a build directory for FFmpeg to include
   --host=i686-linux                                   # use i686 linux
@@ -19,6 +17,6 @@ CONF_FLAGS=(
 echo "CONF_FLAGS=${CONF_FLAGS[@]}"
 (cd $LIB_PATH && \
   emconfigure ./autogen.sh && \
-  CFLAGS=$CFLAGS LDFLAGS=$LDFLAGS emconfigure ./configure -C "${CONF_FLAGS[@]}")
-emmake make -C $LIB_PATH install -j
+  emconfigure ./configure "${CONF_FLAGS[@]}")
 emmake make -C $LIB_PATH clean
+emmake make -C $LIB_PATH install -j

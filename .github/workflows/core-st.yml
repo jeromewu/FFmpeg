@@ -1,0 +1,133 @@
+name: Build FFmpeg.wasm (Single Thread)
+on:
+  push:
+    branches:
+      - n4.3.1-wasm
+  pull_request:
+    branches:
+      - n4.3.1-wasm
+
+env:
+  FFMPEG_ST: yes
+  DIST_PATH: wasm/packages/core-st/dist
+  CACHE_KEY_PREFIX: ffmpeg.wasm-core-st
+  # EM_VERSION: 2.0.8
+  # EM_CACHE_FOLDER: 'emsdk-cache'
+
+jobs:
+  build-libs:
+    strategy:
+      max-parallel: 1
+      matrix:
+        script:
+          - build-zlib
+          - build-x264
+          - build-x265
+          - build-libvpx
+          - build-wavpack
+          - build-lame
+          - build-fdk-aac
+          - build-ogg
+          - build-vorbis
+          - build-theora
+          - build-opus
+          - build-libwebp
+          - build-freetype2
+          - build-fribidi
+          - build-harfbuzz
+          - build-libass
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Get commit hash
+        id: get-commit-hash
+        run: |
+          echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+      - name: Cache libs
+        uses: actions/cache@v2
+        with:
+          path: |
+            build
+            wasm/cache
+          key: ${{ env.CACHE_KEY_PREFIX }}-${{ steps.get-commit-hash.outputs.hash }}-${{ matrix.script }}
+          restore-keys: |
+            ${{ env.CACHE_KEY_PREFIX }}-${{ steps.get-commit-hash.outputs.hash }}-
+      - name: List cached libs
+        run: ls -R build || true
+      - name: Build FFMpeg Libs
+        run: bash build-with-docker.sh install-deps ${{ matrix.script }}
+  build-ffmpeg:
+    runs-on: ubuntu-latest
+    needs: build-libs
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: Get commit hash
+        id: get-commit-hash
+        run: |
+          echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+      - name: Cache multiple paths
+        uses: actions/cache@v2
+        env:
+          GIT_HASH: $(git rev-parse --short HEAD)
+        with:
+          path: |
+            build
+            wasm/cache
+          key: ${{ env.CACHE_KEY_PREFIX }}-${{ steps.get-commit-hash.outputs.hash }}-ffmpeg
+          restore-keys: |
+            ${{ env.CACHE_KEY_PREFIX }}-${{ steps.get-commit-hash.outputs.hash }}-
+      - name: List cached libs
+        run: ls -R build || true
+      - name: Build FFMpeg
+        run: |
+          bash build-with-docker.sh \
+            install-deps \
+            configure-ffmpeg \
+            build-ffmpeg
+      - uses: actions/upload-artifact@master
+        with:
+          name: ffmpeg-core
+          path: ${{ env.DIST_PATH }}
+
+  # Disable macos build due to there is no ldconfig command
+  # during freetype2 build.
+  # macos-build:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #         submodules: recursive
+  #     - name: Setup cache
+  #       id: cache-system-libraries
+  #       uses: actions/cache@v2
+  #       with:
+  #         path: ${{env.EM_CACHE_FOLDER}}
+  #         key: ${{env.EM_VERSION}}-${{ runner.os }}
+  #     - uses: mymindstorm/setup-emsdk@v6
+  #       with:
+  #         version: ${{env.EM_VERSION}}
+  #         actions-cache-folder: ${{env.EM_CACHE_FOLDER}}
+  #     - name: Build FFMpeg
+  #       shell: bash
+  #       run: |
+  #         export PATH=$PATH:$PWD/emsdk-cache/emsdk-master/upstream/bin
+  #         bash build.sh
+  #     - uses: actions/upload-artifact@master
+  #       with:
+  #         name: ffmpeg-core-macos
+  #         path: wasm/dist
+  # Not working with error messsage:
+  #   C:\ProgramData\Chocolatey\lib\mingw\tools\install\mingw64\x86_64-w64-mingw32\bin\ar.exe: libavfilter/vsink_null: No such file or directory
+  # windows-build:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Build FFMpeg
+  #       shell: bash
+  #       run: |
+  #         bash build.sh

@@ -5,7 +5,6 @@ source $(dirname $0)/var.sh
 
 LIB_PATH=third_party/aom
 CMBUILD_DIR=cmbuild
-CFLAGS="-s USE_PTHREADS=1 $OPTIM_FLAGS"
 CM_FLAGS=(
   -DCMAKE_INSTALL_PREFIX=$BUILD_DIR             # assign lib and include install path
   -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_FILE        # use emscripten toolchain file

@@ -14,6 +14,6 @@ CONF_FLAGS=(
   --disable-require-system-font-provider
 )
 echo "CONF_FLAGS=${CONF_FLAGS[@]}"
-(cd $LIB_PATH && ./autogen.sh && EM_PKG_CONFIG_PATH=$EM_PKG_CONFIG_PATH emconfigure ./configure -C "${CONF_FLAGS[@]}")
-emmake make -C $LIB_PATH install -j
+(cd $LIB_PATH && ./autogen.sh && emconfigure ./configure "${CONF_FLAGS[@]}")
 emmake make -C $LIB_PATH clean
+emmake make -C $LIB_PATH install -j

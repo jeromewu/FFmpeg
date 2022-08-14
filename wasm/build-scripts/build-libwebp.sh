@@ -4,7 +4,6 @@ set -euo pipefail
 source $(dirname $0)/var.sh
 
 LIB_PATH=third_party/libwebp
-CXXFLAGS="-s USE_PTHREADS=1 $OPTIM_FLAGS"
 CM_FLAGS=(
   -DCMAKE_INSTALL_PREFIX=$BUILD_DIR
   -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_FILE
@@ -28,6 +27,6 @@ cd $LIB_PATH
 mkdir -p build
 cd build
 emmake cmake .. -DCMAKE_C_FLAGS="$CXXFLAGS" ${CM_FLAGS[@]}
-emmake make install
 emmake make clean
+emmake make install
 cd $ROOT_DIR
