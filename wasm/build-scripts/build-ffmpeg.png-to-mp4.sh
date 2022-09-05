@@ -4,22 +4,24 @@ set -eo pipefail
 source $(dirname $0)/var.sh
 
 if [[ "$FFMPEG_ST" != "yes" ]]; then
-  mkdir -p wasm/packages/core.png-to-mp4/dist
+  DISTDIR="wasm/packages/core.png-to-mp4/dist"
   EXPORTED_FUNCTIONS="[_main, _proxy_main]"
   EXTRA_FLAGS=(
     -pthread
     -s USE_PTHREADS=1                             # enable pthreads support
     -s PROXY_TO_PTHREAD=1                         # detach main() from browser/UI main thread
-    -o wasm/packages/core.png-to-mp4/dist/ffmpeg-core.js
+		-s INITIAL_MEMORY=1073741824                  # 1GB
   )
 else
-  mkdir -p wasm/packages/core-st.png-to-mp4/dist
+  DISTDIR="wasm/packages/core-st.png-to-mp4/dist"
   EXPORTED_FUNCTIONS="[_main]"
   EXTRA_FLAGS=(
-    -o wasm/packages/core-st.png-to-mp4/dist/ffmpeg-core.js
+		-s INITIAL_MEMORY=33554432                   # 32MB
+		-s MAXIMUM_MEMORY=1073741824                  # 1GB
+		-s ALLOW_MEMORY_GROWTH=1
   )
 fi
-
+mkdir -p "$DISTDIR"
 FLAGS=(
   -I. -I./fftools -I$BUILD_DIR/include
   -Llibavcodec -Llibavdevice -Llibavfilter -Llibavformat -Llibavresample -Llibavutil -Llibpostproc -Llibswscale -Llibswresample -L$BUILD_DIR/lib
@@ -32,8 +34,8 @@ FLAGS=(
   -s MODULARIZE=1                               # use modularized version to be more flexible
   -s EXPORT_NAME="createFFmpegCore"             # assign export name for browser
   -s EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS"  # export main and proxy_main funcs
-  -s EXTRA_EXPORTED_RUNTIME_METHODS="[FS, cwrap, ccall, setValue, writeAsciiToMemory]"   # export preamble funcs
-  -s INITIAL_MEMORY=1073741824                  # 1073741824 bytes = 1 GB
+  -s EXTRA_EXPORTED_RUNTIME_METHODS="[FS, cwrap, ccall, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
+  -o "$DISTDIR/ffmpeg-core.js"
   --post-js wasm/src/post.js
   --pre-js wasm/src/pre.js
   $OPTIM_FLAGS
