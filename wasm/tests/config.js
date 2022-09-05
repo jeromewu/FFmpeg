@@ -251,6 +251,16 @@ const CASES = [
       { name: 'video.mp4', type: 'video/mp4' },
     ]
   },
+  {
+    name: 'png to webm',
+    args: ['-i', 'image.png', 'video.webm'],
+    input: [
+      { name: 'image.png', data: png },
+    ],
+    output: [
+      { name: 'video.webm', type: 'video/webm' },
+    ]
+  },
 ];
 
 module.exports = {
