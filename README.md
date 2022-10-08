@@ -93,3 +93,5 @@ $ npm test
 | fribidi | 1.0.10 | Arabic and Hebrew alphabets support |
 | harfbuzz | 2.7.4 | text shaping engine |
 | libass | 0.15.0 | SSA/ASS subtitles rendering library |
+
+
