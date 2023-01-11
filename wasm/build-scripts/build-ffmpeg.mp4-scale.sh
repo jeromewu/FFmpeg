@@ -5,7 +5,7 @@ source $(dirname $0)/var.sh
 
 if [[ "$FFMPEG_ST" != "yes" ]]; then
   mkdir -p wasm/packages/core.mp4-scale/dist
-  EXPORTED_FUNCTIONS="[_main, _proxy_main]"
+  EXPORTED_FUNCTIONS="[_main, emscripten_proxy_main]"
   EXTRA_FLAGS=(
     -pthread
     -s USE_PTHREADS=1                             # enable pthreads support
