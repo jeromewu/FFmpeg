@@ -4,7 +4,7 @@ let resolve = null;
 const ffmpeg = ({ core, args }) =>
   new Promise((_resolve) => {
     core.ccall(
-      "emscripten_proxy_main", // use emscripten_proxy_main if emscripten upgraded
+      "_emscripten_proxy_main",
       "number",
       ["number", "number"],
       parseArgs(core, ["ffmpeg", "-hide_banner", "-nostdin", ...args])
@@ -14,10 +14,11 @@ const ffmpeg = ({ core, args }) =>
 
 const getCore = (corename) =>
   require(`../../../packages/${corename}/dist/ffmpeg-core`)({
+    noExitRuntime: true,
     printErr: () => {},
     print: (m) => {
-      if (m.startsWith("FFMPEG_END")) {
-        resolve();
+      if (m === "FFMPEG_END") {
+        setTimeout(resolve,1000); // otherwise wasm will not close correctly when run with jest
       }
     },
   });

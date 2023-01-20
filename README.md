@@ -55,7 +55,7 @@ $ npm test
 
 | Library/Tool Name | Version | Remark |
 | ----------------- | ------- | ------ |
-| Emscripten | 2.0.34 | |
+| Emscripten | 3.1.30 | |
 | FFmpeg | 4.3.1 | |
 
 #### Video
