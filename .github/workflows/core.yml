@@ -11,7 +11,7 @@ env:
   FFMPEG_ST: no
   DIST_PATH: wasm/packages/core/dist
   CACHE_KEY_PREFIX: ffmpeg.wasm-core
-  # EM_VERSION: 2.0.8
+  # EM_VERSION: 3.1.30
   # EM_CACHE_FOLDER: 'emsdk-cache'
 
 jobs:

@@ -4,8 +4,8 @@ set -eo pipefail
 source $(dirname $0)/var.sh
 
 if [[ "$FFMPEG_ST" != "yes" ]]; then
-  DISTDIR="wasm/packages/core.mp4-scale/dist"
-  EXPORTED_FUNCTIONS="[_main, _proxy_main]"
+  mkdir -p wasm/packages/core.mp4-scale/dist
+  EXPORTED_FUNCTIONS="[_main, __emscripten_proxy_main]"
   EXTRA_FLAGS=(
     -pthread
     -s USE_PTHREADS=1                             # enable pthreads support
@@ -34,8 +34,8 @@ FLAGS=(
   -s MODULARIZE=1                               # use modularized version to be more flexible
   -s EXPORT_NAME="createFFmpegCore"             # assign export name for browser
   -s EXPORTED_FUNCTIONS="$EXPORTED_FUNCTIONS"  # export main and proxy_main funcs
-  -s EXTRA_EXPORTED_RUNTIME_METHODS="[FS, cwrap, ccall, setValue, writeAsciiToMemory, lengthBytesUTF8, stringToUTF8, UTF8ToString]"   # export preamble funcs
-  -o "$DISTDIR/ffmpeg-core.js"
+  -s EXPORTED_RUNTIME_METHODS="[FS, cwrap, ccall, setValue, writeAsciiToMemory]"   # export preamble funcs
+  -s INITIAL_MEMORY=1073741824                  # 1073741824 bytes = 1 GB
   --post-js wasm/src/post.js
   --pre-js wasm/src/pre.js
   $OPTIM_FLAGS

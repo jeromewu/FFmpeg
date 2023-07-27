@@ -33,7 +33,7 @@ module.exports = (mode, corename, caseFilter = (name) => true) => {
         expect(type).toBe(mime);
       }
       try {
-        await core.exit();
+        await core.exit(1);
       } catch(e) {}
     }, TIMEOUT);
   });

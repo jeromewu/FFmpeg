@@ -42,7 +42,7 @@
 	url = https://github.com/ffmpegwasm/opus
 [submodule "third_party/libwebp"]
 	path = third_party/libwebp
-	url = https://github.com/ffmpegwasm/libwebp
+	url = https://github.com/webmproject/libwebp.git
 [submodule "third_party/fribidi"]
 	path = third_party/fribidi
 	url = https://github.com/fribidi/fribidi.git

@@ -109,7 +109,7 @@ const CASES = [
   },
   {
     name: 'avi to vp9 webm',
-    args: ['-i', 'video.avi', 'video.webm'],
+    args: ['-i', 'video.avi', '-codec:v', 'libvpx', 'video.webm'],
     input: [
       { name: 'video.avi', data: avi },
     ],
@@ -119,7 +119,7 @@ const CASES = [
   },
   {
     name: 'avi to vp9 webm with mt',
-    args: ['-i', 'video.avi', '-row-mt', '1', 'video.webm'],
+    args: ['-i', 'video.avi', '-row-mt', '1', '-codec:v', 'libvpx', 'video.webm'],
     input: [
       { name: 'video.avi', data: avi },
     ],
